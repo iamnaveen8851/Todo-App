@@ -1,0 +1,32 @@
+{
+  "todos": [
+    {
+      "id": "e7b9",
+      "title": "task 1",
+      "assignedTo": "rita",
+      "completionDateTime": "2024-03-26T09:41",
+      "status": false
+    },
+    {
+      "id": "5096",
+      "title": "task 2",
+      "assignedTo": "john",
+      "completionDateTime": "2024-03-26T09:41",
+      "status": true
+    },
+    {
+      "id": "06b8",
+      "title": "task 3",
+      "assignedTo": "deepak",
+      "completionDateTime": "2024-03-26T09:41",
+      "status": "pending"
+    },
+    {
+      "id": "565c",
+      "title": "task 4",
+      "assignedTo": "john",
+      "completionDateTime": "2024-03-26T09:41",
+      "status": "pending"
+    }
+  ]
+}

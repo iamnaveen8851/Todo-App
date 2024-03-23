@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import {
-  Box,
-  FormControl,
-  FormLabel,
-  Input,
-  Button,
-  Select,
-} from "@chakra-ui/react";
+import { Box, FormControl, FormLabel, Input, Button, Select } from "@chakra-ui/react";
 
 const TodoInput = ({ setTodos, todos }) => {
   const [title, setTitle] = useState("");
@@ -24,17 +17,21 @@ const TodoInput = ({ setTodos, todos }) => {
         status: "Pending",
       };
 
-      let res = await axios.post(`http://localhost:3001/todos`, newTodoObj);
+      const res = await axios.post(`http://localhost:8080/todos`, newTodoObj); // Updated endpoint URL
       setTodos([...todos, res.data]);
+
+      // Clear input fields after successful submission
+      setTitle("");
+      setAssignedTo("");
+      setCompletionDateTime("");
     } catch (error) {
-      console.log(error);
+      console.log("Error:", error);
     }
   }
 
   return (
-    
-    <Box style={{border : "1px solid black", width : "60%", margin : "auto"}}>
-      <form style={{margin : "auto"}}  onSubmit={handleSubmit}>
+    <Box style={{ border: "1px solid black", width: "60%", margin: "auto" }}>
+      <form style={{ margin: "auto" }} onSubmit={handleSubmit}>
         <FormControl w="20%">
           <FormLabel>Title</FormLabel>
           <Input

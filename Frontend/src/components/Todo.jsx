@@ -31,33 +31,79 @@ const Todo = () => {
 
   //   filter and sort states
   const [filterAssignedTo, setFilterAssignedTo] = useState("default");
-  const [sortDateTime, setSortDateTime] = useState("asc");
+  const [sortDateTime, setSortDateTime] = useState("default");
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(3);
   useEffect(() => {
     getData(filterAssignedTo, sortDateTime);
-  }, [filterAssignedTo, sortDateTime]);
+  }, [filterAssignedTo, sortDateTime, page]);
 
-  //   to get data
-  async function getData(filterAssignedTo, sortDateTime) {
+ 
+//   async function getData(filterAssignedTo, sortDateTime, page) {
+//     try {
+//       let url = `http://localhost:8080/todos?_page=${page}&_limit=${limit}`;
+
+//       // Collect query parameters
+//       const queryParams = [];
+//       if (filterAssignedTo !== "default") {
+//         queryParams.push(`assignedTo=${filterAssignedTo}`);
+//       }
+//       if (sortDateTime !== "default") {
+//         queryParams.push(`_sort=completionDateTime&_order=${sortDateTime}`);
+//       }
+
+//       // Append query parameters to the URL if there are any
+//       if (queryParams.length > 0) {
+//         url += `?${queryParams.join("&")}`;
+//       }
+
+//       console.log(url);
+
+//       let res = await axios.get(url);
+//       setTodos(res.data);
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   }
+
+  // to edit data
+
+  // Handle edit click
+  async function getData(filterAssignedTo, sortDateTime, page) {
     try {
       let url = `http://localhost:8080/todos`;
-
+  
+      // Construct query parameters
+      const queryParams = [];
       if (filterAssignedTo !== "default") {
-        url+= `?assignedTo=${filterAssignedTo}`
+        queryParams.push(`assignedTo=${filterAssignedTo}`);
       }
-
+      if (sortDateTime !== "default") {
+        queryParams.push(`_sort=completionDateTime&_order=${sortDateTime}`);
+      }
+      if (page) {
+        queryParams.push(`_page=${page}`);
+      }
+      if (limit) {
+        queryParams.push(`_limit=${limit}`);
+      }
+  
+      // Append query parameters to the URL if there are any
+      if (queryParams.length > 0) {
+        url += `?${queryParams.join("&")}`;
+      }
+  
       console.log(url);
-
+  
       let res = await axios.get(url);
-
       setTodos(res.data);
     } catch (error) {
       console.log(error);
     }
   }
-
-  // to edit data
-
-  // Handle edit click
+  
+  
+  
   const handleEditClick = (todo) => {
     setEditingTodo(todo);
     setIsOpen(true);
@@ -106,15 +152,34 @@ const Todo = () => {
   }
 
   // patch request with to toggle status
+  //   async function handleStatus(id) {
+  //     try {
+  //       const updateTodo = todos.find((todo) => todo.id === id);
+  //       updateTodo.status = !updateTodo.status;
+  //       let res = await axios.patch(`http://localhost:8080/todos/${id}`, {
+  //         status: updateTodo.status,
+  //       });
+  //       setStatus(!status);
+  //       getData();
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
   async function handleStatus(id) {
     try {
-      const updateTodo = todos.find((todo) => todo.id === id);
-      updateTodo.status = !updateTodo.status;
+      // Find the todo item by ID
+      const updatedTodo = todos.find((todo) => todo.id === id);
+
+      // Toggle the status
+      updatedTodo.status = !updatedTodo.status;
+
+      // Send the updated status to the backend
       let res = await axios.patch(`http://localhost:8080/todos/${id}`, {
-        status: updateTodo.status,
+        status: updatedTodo.status ? "completed" : "pending", // Sending the updated status value
       });
-        setStatus(!status);
-      getData();
+
+      // Update the todos state with the updated data
+      setTodos(todos.map((todo) => (todo.id === id ? updatedTodo : todo)));
     } catch (error) {
       console.log(error);
     }
@@ -133,6 +198,7 @@ const Todo = () => {
           value={filterAssignedTo}
           onChange={(e) => setFilterAssignedTo(e.target.value)}
         >
+          <option value="">---</option>
           <option value="john">john</option>
           <option value="rita">rita</option>
           <option value="bharti">bharti</option>
@@ -140,20 +206,17 @@ const Todo = () => {
         </Select>
       </FormControl>
 
-
       <FormControl w="20%">
         <FormLabel>Sort By completion date & time</FormLabel>
         <Select
           value={sortDateTime}
           onChange={(e) => setSortDateTime(e.target.value)}
         >
+          <option value="">---</option>
           <option value="asc">nearest date first </option>
           <option value="desc">farthest date first </option>
-         
         </Select>
       </FormControl>
-
-
 
       {/* <Select name="" id="">
         Sort By Date and time
@@ -174,7 +237,7 @@ const Todo = () => {
             <p>{todo.assignedTo}</p>
             <p>{todo.completionDateTime}</p>
             <p onClick={() => handleStatus(todo.id)}>
-              {status? "completed" : "pending"}
+              {todo.status ? "completed" : "pending"}
             </p>
             <Button colorScheme="blue" onClick={() => handleEditClick(todo)}>
               Edit
@@ -182,6 +245,9 @@ const Todo = () => {
             <Button onClick={() => handleDelete(todo.id)}>Delete</Button>
           </Box>
         ))}
+
+        <Button onClick={() => setPage((prev) => prev - 1)}>Prev</Button>
+        <Button onClick={() => setPage((prev) => page + 1)}>Next</Button>
       </Box>
 
       {/* Modal to edit the todo */}

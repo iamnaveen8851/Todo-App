@@ -5,14 +5,14 @@
       "title": "task 1",
       "assignedTo": "rita",
       "completionDateTime": "2024-03-26T09:41",
-      "status": false
+      "status": "completed"
     },
     {
       "id": "5096",
       "title": "task 2",
       "assignedTo": "john",
       "completionDateTime": "2024-03-26T09:41",
-      "status": true
+      "status": false
     },
     {
       "id": "06b8",
@@ -26,7 +26,63 @@
       "title": "task 4",
       "assignedTo": "john",
       "completionDateTime": "2024-03-26T09:41",
+      "status": false
+    },
+    {
+      "id": "6639",
+      "title": "gdgsdg",
+      "assignedTo": "bharti",
+      "completionDateTime": "2024-03-12T12:14",
+      "status": "Pending"
+    },
+    {
+      "id": "dummy1",
+      "title": "dummy task 1",
+      "assignedTo": "john",
+      "completionDateTime": "2024-03-26T09:41",
+      "status": false
+    },
+    {
+      "id": "dummy2",
+      "title": "dummy task 2",
+      "assignedTo": "rita",
+      "completionDateTime": "2024-03-26T09:41",
+      "status": "completed"
+    },
+    {
+      "id": "dummy99",
+      "title": "dummy task 99",
+      "assignedTo": "deepak",
+      "completionDateTime": "2024-03-26T09:41",
       "status": "pending"
+    },
+    {
+      "id": "dummy100",
+      "title": "dummy task 100",
+      "assignedTo": "john",
+      "completionDateTime": "2024-03-26T09:41",
+      "status": false
+    },
+    {
+      "id": "dummy101",
+      "title": "dummy task 102",
+      "assignedTo": "john",
+      "completionDateTime": "2024-03-26T09:41",
+      "status": false
+    },
+    {
+      "id": "2de9",
+      "title": "redux",
+      "assignedTo": "bharti",
+      "completionDateTime": "2024-03-19T12:36",
+      "status": "Pending"
+    },
+    {
+      "id": "5ade",
+      "title": "learn js ",
+      "assignedTo": "rita",
+      "completionDateTime": "2024-03-06T12:36",
+      "status": "Pending"
     }
   ]
 }
